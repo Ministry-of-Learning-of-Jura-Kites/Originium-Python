@@ -19,15 +19,20 @@ def get(data: dict, path: str | List[str]):
 
 
 # %%
-def get_data(paths: pathlib.Path):
+def get_data(paths: List[pathlib.Path]):
     data_list = []
     for path in paths:
         try:
             with open(path, encoding="UTF-8") as file:
                 data = json.load(file)
             filtered_data = {}
-            filtered_data["title"] = get(
+            filtered_data["filename"] = path.name
+            filtered_data["article_title"] = get(
                 data, ["abstracts-retrieval-response", "coredata", "dc:title"]
+            )
+            filtered_data["publish_title"] = get(
+                data,
+                ["abstracts-retrieval-response", "coredata", "prism:publicationName"],
             )
             filtered_data["abstract"] = get(
                 data,
@@ -79,4 +84,5 @@ if __name__ == "__main__":
         for data_part in p.map(get_data, buckets.values()):
             data_list += data_part
     df = pd.DataFrame(data_list)
+    df["publish_date"] = pd.to_datetime(df["publish_date"])
     df.to_csv("papers.csv")
