@@ -110,90 +110,90 @@ def get_df(data_list):
     return df
 
 
-# %%
-def get_papers_df(df):
-    papers_df = df.drop(
-        columns=["classification_codes", "affiliations", "references", "keywords"]
-    )
-    return papers_df
+# # %%
+# def get_papers_df(df):
+#     papers_df = df.drop(
+#         columns=["classification_codes", "affiliations", "references", "keywords"]
+#     )
+#     return papers_df
 
 
-def get_classification_codes_df(df):
-    classification_codes_df = df.explode("classification_codes", ignore_index=True)[
-        ["id", "classification_codes"]
-    ]
-    classification_codes_df.rename(
-        columns={"id": "paper_id", "classification_codes": "classification_code"},
-        inplace=True,
-    )
-    classification_codes_df = classification_codes_df[["paper_id"]].join(
-        pd.json_normalize(classification_codes_df["classification_code"])
-    )
-    classification_codes_df.drop(columns=["@_fa"], inplace=True)
-    classification_codes_df.rename(
-        columns={"$": "name", "@code": "code", "@abbrev": "abbreviation"}, inplace=True
-    )
+# def get_classification_codes_df(df):
+#     classification_codes_df = df.explode("classification_codes", ignore_index=True)[
+#         ["id", "classification_codes"]
+#     ]
+#     classification_codes_df.rename(
+#         columns={"id": "paper_id", "classification_codes": "classification_code"},
+#         inplace=True,
+#     )
+#     classification_codes_df = classification_codes_df[["paper_id"]].join(
+#         pd.json_normalize(classification_codes_df["classification_code"])
+#     )
+#     classification_codes_df.drop(columns=["@_fa"], inplace=True)
+#     classification_codes_df.rename(
+#         columns={"$": "name", "@code": "code", "@abbrev": "abbreviation"}, inplace=True
+#     )
 
-    paper_to_classification_code_df = classification_codes_df.loc[
-        :, ["paper_id", "code"]
-    ]
+#     paper_to_classification_code_df = classification_codes_df.loc[
+#         :, ["paper_id", "code"]
+#     ]
 
-    classification_codes_df.drop(columns=["paper_id"], inplace=True)
+#     classification_codes_df.drop(columns=["paper_id"], inplace=True)
 
-    return (classification_codes_df, paper_to_classification_code_df)
-
-
-# %%
-def get_affiliations_df(df):
-    affiliations_df = df.explode("affiliations", ignore_index=True)[
-        ["id", "affiliations"]
-    ]
-    affiliations_df.rename(
-        columns={"id": "paper_id", "affiliations": "affiliation"}, inplace=True
-    )
-    affiliations_df = affiliations_df[["paper_id"]].join(
-        pd.json_normalize(affiliations_df["affiliation"])
-    )
-
-    paper_to_affiliations_df = affiliations_df.loc[:, ["paper_id", "@id"]]
-    paper_to_affiliations_df.rename(columns={"@id": "affiliation_id"}, inplace=True)
-
-    affiliations_df = (
-        affiliations_df.drop(columns=["paper_id"])
-        .drop_duplicates()
-        .reset_index(drop=True)
-    )
-
-    return (affiliations_df, paper_to_affiliations_df)
+#     return (classification_codes_df, paper_to_classification_code_df)
 
 
-# %%
-def get_references_df(df):
-    references_df = df.explode("references", ignore_index=True)[["id", "references"]]
-    references_df.rename(
-        columns={"id": "paper_id", "references": "reference"}, inplace=True
-    )
-    references_df = references_df.join(
-        pd.json_normalize(references_df["reference"])
-    ).drop(columns=["reference"])
-    return references_df
+# # %%
+# def get_affiliations_df(df):
+#     affiliations_df = df.explode("affiliations", ignore_index=True)[
+#         ["id", "affiliations"]
+#     ]
+#     affiliations_df.rename(
+#         columns={"id": "paper_id", "affiliations": "affiliation"}, inplace=True
+#     )
+#     affiliations_df = affiliations_df[["paper_id"]].join(
+#         pd.json_normalize(affiliations_df["affiliation"])
+#     )
+
+#     paper_to_affiliations_df = affiliations_df.loc[:, ["paper_id", "@id"]]
+#     paper_to_affiliations_df.rename(columns={"@id": "affiliation_id"}, inplace=True)
+
+#     affiliations_df = (
+#         affiliations_df.drop(columns=["paper_id"])
+#         .drop_duplicates()
+#         .reset_index(drop=True)
+#     )
+
+#     return (affiliations_df, paper_to_affiliations_df)
 
 
-# %%
-def get_keywords_df(df):
-    keywords_df = df.explode("keywords", ignore_index=True)[["id", "keywords"]]
-    keywords_df.rename(columns={"id": "paper_id", "keywords": "keyword"}, inplace=True)
-    keywords_df = keywords_df.join(pd.json_normalize(keywords_df["keyword"])).drop(
-        columns=["keyword"]
-    )
-    keywords_df = keywords_df.loc[:, ["paper_id", "$"]]
-    keywords_df.rename(columns={"$": "keyword"}, inplace=True)
+# # %%
+# def get_references_df(df):
+#     references_df = df.explode("references", ignore_index=True)[["id", "references"]]
+#     references_df.rename(
+#         columns={"id": "paper_id", "references": "reference"}, inplace=True
+#     )
+#     references_df = references_df.join(
+#         pd.json_normalize(references_df["reference"])
+#     ).drop(columns=["reference"])
+#     return references_df
 
-    paper_to_keywords_df = keywords_df
 
-    keywords_df = keywords_df.drop(columns=["paper_id"]).drop_duplicates()
+# # %%
+# def get_keywords_df(df):
+#     keywords_df = df.explode("keywords", ignore_index=True)[["id", "keywords"]]
+#     keywords_df.rename(columns={"id": "paper_id", "keywords": "keyword"}, inplace=True)
+#     keywords_df = keywords_df.join(pd.json_normalize(keywords_df["keyword"])).drop(
+#         columns=["keyword"]
+#     )
+#     keywords_df = keywords_df.loc[:, ["paper_id", "$"]]
+#     keywords_df.rename(columns={"$": "keyword"}, inplace=True)
 
-    return (keywords_df, paper_to_keywords_df)
+#     paper_to_keywords_df = keywords_df
+
+#     keywords_df = keywords_df.drop(columns=["paper_id"]).drop_duplicates()
+
+#     return (keywords_df, paper_to_keywords_df)
 
 
 # %%
@@ -211,24 +211,24 @@ if __name__ == "__main__":
     merged_df = get_df(data_list)
     merged_df.to_csv("data/processed/merged.csv")
 
-    papers_df = get_papers_df(merged_df)
-    papers_df.to_csv("data/processed/papers.csv")
+    # papers_df = get_papers_df(merged_df)
+    # papers_df.to_csv("data/processed/papers.csv")
 
-    classification_codes_df, paper_to_classification_code_df = (
-        get_classification_codes_df(merged_df)
-    )
-    classification_codes_df.to_csv("data/processed/classification_codes.csv")
-    paper_to_classification_code_df.to_csv(
-        "data/processed/paper_to_classification_code.csv"
-    )
+    # classification_codes_df, paper_to_classification_code_df = (
+    #     get_classification_codes_df(merged_df)
+    # )
+    # classification_codes_df.to_csv("data/processed/classification_codes.csv")
+    # paper_to_classification_code_df.to_csv(
+    #     "data/processed/paper_to_classification_code.csv"
+    # )
 
-    affiliations_df, paper_to_affiliations_df = get_affiliations_df(merged_df)
-    affiliations_df.to_csv("data/processed/affiliations.csv")
-    paper_to_affiliations_df.to_csv("data/processed/paper_to_affiliations.csv")
+    # affiliations_df, paper_to_affiliations_df = get_affiliations_df(merged_df)
+    # affiliations_df.to_csv("data/processed/affiliations.csv")
+    # paper_to_affiliations_df.to_csv("data/processed/paper_to_affiliations.csv")
 
-    references_df = get_references_df(merged_df)
-    references_df.to_csv("data/processed/references.csv")
+    # references_df = get_references_df(merged_df)
+    # references_df.to_csv("data/processed/references.csv")
 
-    keywords_df, paper_to_keywords_df = get_keywords_df(merged_df)
-    keywords_df.to_csv("data/processed/keywords.csv")
-    paper_to_keywords_df.to_csv("data/processed/paper_to_keywords.csv")
+    # keywords_df, paper_to_keywords_df = get_keywords_df(merged_df)
+    # keywords_df.to_csv("data/processed/keywords.csv")
+    # paper_to_keywords_df.to_csv("data/processed/paper_to_keywords.csv")
