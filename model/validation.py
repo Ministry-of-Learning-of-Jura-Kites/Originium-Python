@@ -2,9 +2,10 @@ import pandera as pa
 from pandera import DataFrameModel, Field
 
 
-class ScopusSchema(DataFrameModel):
-    article_title: str = Field(nullable=False, unique=True)
-    publish_title: str = Field(nullable=False, unique=True)
+class PaperSchema(DataFrameModel):
+    id: str = Field(nullable=False, unique=True)
+    article_title: str = Field(nullable=False, unique=False)
+    publish_title: str = Field(nullable=False, unique=False)
     abstract: str = Field(nullable=False, unique=False)
     publish_date: str = Field(nullable=False, unique=False)
     cited_by_count: int = Field(nullable=False, unique=False)
