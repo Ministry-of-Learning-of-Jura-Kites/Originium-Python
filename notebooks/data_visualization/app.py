@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 import json
 import pydeck as pdk
 import os
-
-st.set_page_config(page_title="Research Data Visualization Dashboard", layout="wide")
+import plotly.express as px
 
 DATA_PATH = "../../data/processed/"
 
@@ -64,7 +63,7 @@ def plot_top_journals(filtered_papers):
         st.altair_chart(bar_chart, use_container_width=True)
     else:
         st.write("No journal information available.")
-
+    
 def plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df):
     st.subheader("3. Top Research Classification Codes")
     st.write("Most common research areas.")
@@ -102,9 +101,7 @@ def plot_research_trends_over_time(filtered_papers, paper_to_classification_code
     top_n = st.slider("Select number of top categories to display:", min_value=3, max_value=max_categories, value=10)
     category_counts = merged_class.groupby('display_name').size().reset_index(name='total_count')
     top_categories = category_counts.nlargest(top_n, 'total_count')['display_name']
-    merged_class['display_name'] = merged_class['display_name'].apply(
-        lambda x: x if x in top_categories.values else 'Others'
-    )
+    merged_class = merged_class[merged_class['display_name'].isin(top_categories)]
     trends = merged_class.groupby(['year', 'display_name']).size().reset_index(name='count')
     trend_chart = alt.Chart(trends).mark_line(point=True).encode(
         x=alt.X('year:O', title='Year'),
@@ -115,16 +112,24 @@ def plot_research_trends_over_time(filtered_papers, paper_to_classification_code
             alt.Tooltip('display_name:N', title='Category'),
             alt.Tooltip('count:Q', title='Number of Papers')
         ]
-    )
+    ) 
     st.altair_chart(trend_chart, use_container_width=True)
 
 def plot_keyword_analysis(filtered_papers, paper_to_keyword_df):
-    st.subheader("5. Keyword Analysis")
+    st.subheader("7. Keyword Analysis")
     st.write("Common keywords in research.")
     merged_keywords = paper_to_keyword_df[paper_to_keyword_df['id'].isin(filtered_papers['id'])]
     if not merged_keywords.empty:
         keyword_text = " ".join(merged_keywords['keyword'].dropna().astype(str))
-        wordcloud = WordCloud(background_color="white", width=800, height=400).generate(keyword_text)
+        wordcloud = WordCloud(
+            background_color="white",
+            width=800,
+            height=400,
+            colormap="viridis",
+            max_words=150,
+            max_font_size=100
+        ).generate(keyword_text)
+
         fig, ax = plt.subplots(figsize=(10, 5))
         ax.imshow(wordcloud, interpolation='bilinear')
         ax.axis('off')
@@ -229,9 +234,43 @@ def plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affil
     else:
         st.write("No country information available.")
 
+
+def plot_top_authors_publication_distribution(papers_df, paper_reference_author_df):
+    st.subheader("5. Top Authors Publication Distribution")
+    st.write("Pie chart showing publication contributions by most prolific authors.")
+    author_publications = pd.merge(
+        paper_reference_author_df, 
+        papers_df[['id', 'publish_date']], 
+        left_on='paper_id', 
+        right_on='id', 
+        how='inner'
+    )
+    author_column = 'name'
+    author_pub_counts = author_publications.groupby(author_column).size().reset_index(name='publication_count')
+    max_authors = author_pub_counts[author_column].nunique()
+    top_n = st.slider(
+        "Select number of top authors to display:", 
+        min_value=3, 
+        max_value=min(20, max_authors), 
+        value=min(10, max_authors)
+    )
+    top_authors = author_pub_counts.nlargest(top_n, 'publication_count')
+    fig = px.pie(top_authors, values='publication_count', names=author_column, title='Publication Contributions by Top Authors')
+    st.plotly_chart(fig)
 def main():
+    st.set_page_config(page_title="Research Data Visualization Dashboard", layout="wide", page_icon="📊")
+    st.markdown(
+        """
+        <style>
+        .stSidebar {background-color: #f7f7f7; padding: 10px;}
+        .stContainer {background-color: #ffffff;}
+        .stButton>button {background-color: #4CAF50; color: white; border-radius: 5px;}
+        </style>
+        """, unsafe_allow_html=True
+    )
+
     st.title("Research Data Visualization Dashboard")
-    st.write("This dashboard provides an overview of research publications data.")
+    st.markdown("This dashboard provides an overview of research publications data.")
 
     (papers_df, affiliations_df, classification_codes_df,
      paper_to_classification_code_df, paper_to_affiliation_df,
@@ -239,19 +278,35 @@ def main():
 
     year_range = setup_sidebar(papers_df)
     filtered_papers = papers_df[
-        (papers_df['publish_date'].dt.year >= year_range[0]) & (papers_df['publish_date'].dt.year <= year_range[1])
+        (papers_df['publish_date'].dt.year >= year_range[0]) & 
+        (papers_df['publish_date'].dt.year <= year_range[1])
     ]
     num_filtered_papers = len(filtered_papers)
     st.markdown(f"**Showing data from {year_range[0]} to {year_range[1]} ({num_filtered_papers} papers)**")
 
-    plot_publications_over_time(filtered_papers)
-    plot_top_journals(filtered_papers)
-    plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df)
-    plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df)
-    plot_keyword_analysis(filtered_papers, paper_to_keyword_df)
-    plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df)
+    with st.expander("Publication Over Time", expanded=True):
+        plot_publications_over_time(filtered_papers)
+    
+    with st.expander("Top Journals", expanded=True):
+        plot_top_journals(filtered_papers)
+    
+    with st.expander("Top Research Classification Codes", expanded=True):
+        plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df)
+    
+    with st.expander("Research Trends Over Time", expanded=True):
+        plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df)
+    
+    with st.expander("Top Authors Publication Distribution", expanded=True):
+        plot_top_authors_publication_distribution(papers_df, paper_reference_author_df)
+    
+    with st.expander("Affiliations by Country", expanded=True):
+        plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df)
+    
+    with st.expander("Keyword Analysis", expanded=True):
+        plot_keyword_analysis(filtered_papers, paper_to_keyword_df)
 
     st.markdown("**End of Dashboard**")
 
 if __name__ == "__main__":
     main()
+
