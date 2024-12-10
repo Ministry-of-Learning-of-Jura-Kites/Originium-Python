@@ -9,14 +9,15 @@ import os
 import plotly.express as px
 import sys
 
-ROOT_PATH = "../.."
+ROOT_PATH = ""
 
 sys.path.append(ROOT_PATH)
 from utils.load_pipeline import *
 
 DATA_PATH = os.path.join(ROOT_PATH, "data/processed/")
-PIPELINE_PATH = os.path.join(ROOT_PATH, "../../models/pipeline.pkl")
-SUBJECTS_PATH = os.path.join(ROOT_PATH, "../../data/processed/subjects.csv")
+PIPELINE_PATH = os.path.join(ROOT_PATH, "models/pipeline.pkl")
+SUBJECTS_PATH = os.path.join(ROOT_PATH, "data/processed/subjects.csv")
+GEOJSON_PATH = os.path.join(ROOT_PATH, "notebooks/data_visualization/countries.geo.json")
 
 @st.cache_data
 def load_data(filename: str) -> pd.DataFrame:
@@ -203,7 +204,7 @@ def plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affil
         country_counts['country'] = country_counts['country'].replace(name_mapping)
         country_dict = dict(zip(country_counts['country'], country_counts['count']))
 
-        with open("countries.geo.json", 'r') as f:
+        with open(GEOJSON_PATH, 'r') as f:
             geojson_data = json.load(f)
 
         bubble_data = []
