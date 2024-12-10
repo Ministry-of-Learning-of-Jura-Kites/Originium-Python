@@ -15,7 +15,7 @@ sys.path.append(ROOT_PATH)
 from utils.load_pipeline import *
 
 DATA_PATH = os.path.join(ROOT_PATH, "data/processed/")
-PIPELINE_PATH = os.path.join(ROOT_PATH, "models/pipeline.pkl")
+PIPELINE_PATH = os.path.join(ROOT_PATH, "models/pipeline/pipeline.pkl")
 SUBJECTS_PATH = os.path.join(ROOT_PATH, "data/processed/subjects.csv")
 GEOJSON_PATH = os.path.join(ROOT_PATH, "notebooks/data_visualization/countries.geo.json")
 
