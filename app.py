@@ -45,9 +45,10 @@ def load_and_preprocess_data():
     paper_to_affiliation_df = load_data("paper_to_affiliation.csv")
     paper_to_keyword_df = load_data("paper_to_keyword.csv")
     paper_reference_author_df = load_data("paper_reference_author.csv")
+    author_pub_counts_df = load_data("author_pub_counts.csv")
     return (papers_df, affiliations_df, classification_codes_df,
             paper_to_classification_code_df, paper_to_affiliation_df,
-            paper_to_keyword_df, paper_reference_author_df)
+            paper_to_keyword_df, paper_reference_author_df, author_pub_counts_df)
 
 @st.cache_data
 def load_pipeline():
@@ -278,27 +279,19 @@ def plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affil
         st.write("No country information available.")
 
 @st.cache_data
-def get_top_authors_publication_distribution_data(papers_df, paper_reference_author_df):
-    author_publications = pd.merge(
-        paper_reference_author_df, 
-        papers_df[['id', 'publish_date']], 
-        left_on='paper_id', 
-        right_on='id', 
-        how='inner'
-    )
+def get_top_authors_publication_distribution_data(author_pub_counts):
     author_column = 'name'
-    author_pub_counts = author_publications.groupby(author_column).size().reset_index(name='publication_count')
-    max_authors = author_pub_counts[author_column].nunique()
-    return author_column, author_pub_counts, max_authors
+    max_authors = author_pub_counts['name'].nunique()
+    return author_column, max_authors
 
 @st.cache_data
 def get_top_authors(author_pub_counts, top_n):
     return author_pub_counts.nlargest(top_n, 'publication_count')
 
-def plot_top_authors_publication_distribution(papers_df, paper_reference_author_df):
+def plot_top_authors_publication_distribution(author_pub_counts):
     st.subheader("5. Top Authors Publication Distribution")
     st.write("Pie chart showing publication contributions by most prolific authors.")
-    author_column, author_pub_counts, max_authors = get_top_authors_publication_distribution_data(papers_df, paper_reference_author_df)
+    author_column, max_authors = get_top_authors_publication_distribution_data(author_pub_counts)
     top_n = st.slider(
         "Select number of top authors to display:", 
         min_value=3, 
@@ -320,7 +313,8 @@ def main():
 
         (papers_df, affiliations_df, classification_codes_df,
             paper_to_classification_code_df, paper_to_affiliation_df,
-            paper_to_keyword_df, paper_reference_author_df) = load_and_preprocess_data()
+            paper_to_keyword_df, paper_reference_author_df,
+        author_pub_counts_df) = load_and_preprocess_data()
 
         year_range = setup_sidebar(papers_df)
         filtered_papers = get_filtered_papers(papers_df, year_range)
@@ -345,7 +339,7 @@ def main():
 
         print("Top Authors Publication Distribution")
         with st.expander("Top Authors Publication Distribution", expanded=True):
-            plot_top_authors_publication_distribution(papers_df, paper_reference_author_df)
+            plot_top_authors_publication_distribution(author_pub_counts_df)
 
         print("Affiliations by Country")
         with st.expander("Affiliations by Country", expanded=True):
