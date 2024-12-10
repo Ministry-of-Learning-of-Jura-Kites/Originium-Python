@@ -1,0 +1,322 @@
+name,code,abbreviation
+Medicine (all),2700,MEDI
+Electrical and Electronic Engineering,2208,ENGI
+"Electronic, Optical and Magnetic Materials",2504,MATE
+Chemistry (all),1600,CHEM
+Chemical Engineering (all),1500,CENG
+Industrial and Manufacturing Engineering,2209,ENGI
+Condensed Matter Physics,3104,PHYS
+Physics and Astronomy (all),3100,PHYS
+Surfaces and Interfaces,3110,PHYS
+"Surfaces, Coatings and Films",2508,MATE
+Analytical Chemistry,1602,CHEM
+Biochemistry,1303,BIOC
+Environmental Chemistry,2304,ENVI
+Spectroscopy,1607,CHEM
+Business and International Management,1403,BUSI
+Strategy and Management,1408,BUSI
+Organizational Behavior and Human Resource Management,1407,BUSI
+Genetics,1311,BIOC
+Decision Sciences (miscellaneous),1801,DECI
+Information Systems and Management,1802,DECI
+Aerospace Engineering,2202,ENGI
+Mechanics of Materials,2211,ENGI
+Artificial Intelligence,1702,COMP
+Materials Science (all),2500,MATE
+Electrochemistry,1603,CHEM
+Materials Chemistry,2505,MATE
+Computer Networks and Communications,1705,COMP
+Computer Science Applications,1706,COMP
+Information Systems,1710,COMP
+Signal Processing,1711,COMP
+Software,1712,COMP
+Human-Computer Interaction,1709,COMP
+Computer Vision and Pattern Recognition,1707,COMP
+Astronomy and Astrophysics,3103,PHYS
+Space and Planetary Science,1912,EART
+Environmental Science (all),2300,ENVI
+Earth and Planetary Sciences (all),1900,EART
+"Ecology, Evolution, Behavior and Systematics",1105,AGRI
+Plant Science,1110,AGRI
+Energy (all),2100,ENER
+"Renewable Energy, Sustainability and the Environment",2105,ENER
+Building and Construction,2215,ENGI
+Management Information Systems,1404,BUSI
+Economics and Econometrics,2002,ECON
+Marketing,1406,BUSI
+"Management, Monitoring, Policy and Law",2308,ENVI
+Management of Technology and Innovation,1405,BUSI
+Chemistry (miscellaneous),1601,CHEM
+Molecular Medicine,1313,BIOC
+Pharmaceutical Science,3003,PHAR
+Drug Discovery,3002,PHAR
+Physical and Theoretical Chemistry,1606,CHEM
+Organic Chemistry,1605,CHEM
+Physics and Astronomy (miscellaneous),3101,PHYS
+Polymers and Plastics,2507,MATE
+Civil and Structural Engineering,2205,ENGI
+"Atomic and Molecular Physics, and Optics",3107,PHYS
+Agronomy and Crop Science,1102,AGRI
+Insect Science,1109,AGRI
+Food Science,1106,AGRI
+Nutrition and Dietetics,2916,NURS
+Education,3304,SOCI
+Control and Systems Engineering,2207,ENGI
+Medicine (miscellaneous),2701,MEDI
+"Biochemistry, Genetics and Molecular Biology (miscellaneous)",1301,BIOC
+Cell Biology,1307,BIOC
+Social Sciences (all),3300,SOCI
+Health Policy,2719,MEDI
+"Public Health, Environmental and Occupational Health",2739,MEDI
+Molecular Biology,1312,BIOC
+Immunology and Microbiology (miscellaneous),2401,IMMU
+Computer Graphics and Computer-Aided Design,1704,COMP
+Engineering (all),2200,ENGI
+Nature and Landscape Conservation,2309,ENVI
+Geotechnical Engineering and Engineering Geology,1909,EART
+Mechanical Engineering,2210,ENGI
+Veterinary (all),3400,VETE
+Neurology,2808,NEUR
+Neurology (clinical),2728,MEDI
+Finance,2003,ECON
+Development,3303,SOCI
+Energy Engineering and Power Technology,2102,ENER
+Hardware and Architecture,1708,COMP
+Instrumentation,3105,PHYS
+Dermatology,2708,MEDI
+Geochemistry and Petrology,1906,EART
+Agricultural and Biological Sciences (all),1100,AGRI
+Mathematics (all),2600,MATH
+Applied Mathematics,2604,MATH
+Multidisciplinary,1000,MULT
+Surgery,2746,MEDI
+Medical and Surgical Nursing,2914,NURS
+Anesthesiology and Pain Medicine,2703,MEDI
+Analysis,2603,MATH
+Microbiology,2404,IMMU
+Microbiology (medical),2726,MEDI
+Small Animals,3404,VETE
+Pharmacology,3004,PHAR
+Complementary and Alternative Medicine,2707,MEDI
+Pulmonary and Respiratory Medicine,2740,MEDI
+Structural Biology,1315,BIOC
+Nuclear and High Energy Physics,3106,PHYS
+Immunology and Allergy,2723,MEDI
+Immunology,2403,IMMU
+Dentistry (all),3500,DENT
+Nephrology,2727,MEDI
+Urology,2748,MEDI
+Epidemiology,2713,MEDI
+Oncology,2730,MEDI
+Cancer Research,1306,BIOC
+Infectious Diseases,2725,MEDI
+Critical Care and Intensive Care Medicine,2706,MEDI
+Hepatology,2721,MEDI
+Gastroenterology,2715,MEDI
+Parasitology,2405,IMMU
+Virology,2406,IMMU
+Genetics (clinical),2716,MEDI
+Catalysis,1503,CENG
+Inorganic Chemistry,1604,CHEM
+Accounting,1402,BUSI
+"Economics, Econometrics and Finance (miscellaneous)",2001,ECON
+Pathology and Forensic Medicine,2734,MEDI
+Cardiology and Cardiovascular Medicine,2705,MEDI
+Pharmacology (medical),2736,MEDI
+Logic,2609,MATH
+Biophysics,1304,BIOC
+Biomedical Engineering,2204,ENGI
+"Radiology, Nuclear Medicine and Imaging",2741,MEDI
+Orthodontics,3505,DENT
+Nursing (all),2900,NURS
+Process Chemistry and Technology,1508,CENG
+"Geography, Planning and Development",3305,SOCI
+Psychiatry and Mental Health,2738,MEDI
+Biological Psychiatry,2803,NEUR
+Pollution,2310,ENVI
+"Health, Toxicology and Mutagenesis",2307,ENVI
+Biotechnology,1305,BIOC
+Applied Microbiology and Biotechnology,2402,IMMU
+Forestry,1107,AGRI
+Ecology,2303,ENVI
+Soil Science,1111,AGRI
+Anatomy,2702,MEDI
+Health (social science),3306,SOCI
+Sociology and Political Science,3312,SOCI
+Life-span and Life-course Studies,3319,SOCI
+Environmental Engineering,2305,ENVI
+Ecological Modeling,2302,ENVI
+Water Science and Technology,2312,ENVI
+Waste Management and Disposal,2311,ENVI
+"Safety, Risk, Reliability and Quality",2213,ENGI
+"Physical Therapy, Sports Therapy and Rehabilitation",3612,HEAL
+"Endocrinology, Diabetes and Metabolism",2712,MEDI
+Physiology,1314,BIOC
+Histology,2722,MEDI
+Oral Surgery,3504,DENT
+Dentistry (miscellaneous),3501,DENT
+Clinical Biochemistry,1308,BIOC
+Biochemistry (medical),2704,MEDI
+Materials Science (miscellaneous),2501,MATE
+Developmental Biology,1309,BIOC
+Hematology,2720,MEDI
+Otorhinolaryngology,2733,MEDI
+Fluid Flow and Transfer Processes,1507,CENG
+Immunology and Microbiology (all),2400,IMMU
+Geology,1907,EART
+Statistics and Probability,2613,MATH
+"Statistics, Probability and Uncertainty",1804,DECI
+Orthopedics and Sports Medicine,2732,MEDI
+Endocrinology,1310,BIOC
+Advanced and Specialized Nursing,2902,NURS
+Ceramics and Composites,2503,MATE
+Horticulture,1108,AGRI
+Bioengineering,1502,CENG
+Aquatic Science,1104,AGRI
+Neuroscience (all),2800,NEUR
+Cellular and Molecular Neuroscience,2804,NEUR
+Oceanography,1910,EART
+Global and Planetary Change,2306,ENVI
+Communication,3315,SOCI
+Environmental Science (miscellaneous),2301,ENVI
+"Biochemistry, Genetics and Molecular Biology (all)",1300,BIOC
+Ocean Engineering,2212,ENGI
+Obstetrics and Gynecology,2729,MEDI
+Fuel Technology,2103,ENER
+"Business, Management and Accounting (all)",1400,BUSI
+Public Administration,3321,SOCI
+Filtration and Separation,1506,CENG
+Arts and Humanities (miscellaneous),1201,ARTS
+Ophthalmology,2731,MEDI
+Management Science and Operations Research,1803,DECI
+"Pediatrics, Perinatology and Child Health",2735,MEDI
+Control and Optimization,2606,MATH
+Animal Science and Zoology,1103,AGRI
+Engineering (miscellaneous),2201,ENGI
+Rheumatology,2745,MEDI
+Internal Medicine,2724,MEDI
+Metals and Alloys,2506,MATE
+"Pharmacology, Toxicology and Pharmaceutics (all)",3000,PHAR
+Food Animals,3403,VETE
+Equine,3402,VETE
+Modeling and Simulation,2611,MATH
+Nuclear Energy and Engineering,2104,ENER
+Anthropology,3314,SOCI
+Mathematical Physics,2610,MATH
+Colloid and Surface Chemistry,1505,CENG
+Decision Sciences (all),1800,DECI
+Biomaterials,2502,MATE
+Clinical Psychology,3203,PSYC
+Health Professions (miscellaneous),3601,HEAL
+"Economics, Econometrics and Finance (all)",2000,ECON
+Physiology (medical),2737,MEDI
+Geriatrics and Gerontology,2717,MEDI
+Chemical Engineering (miscellaneous),1501,CENG
+Rehabilitation,2742,MEDI
+Gerontology,2909,NURS
+Social Sciences (miscellaneous),3301,SOCI
+Behavioral Neuroscience,2802,NEUR
+Earth and Planetary Sciences (miscellaneous),1901,EART
+Human Factors and Ergonomics,3307,SOCI
+Computers in Earth Sciences,1903,EART
+Toxicology,3005,PHAR
+Atmospheric Science,1902,EART
+Computational Mathematics,2605,MATH
+Statistical and Nonlinear Physics,3109,PHYS
+Earth-Surface Processes,1904,EART
+Media Technology,2214,ENGI
+Demography,3317,SOCI
+Sensory Systems,2809,NEUR
+Agricultural and Biological Sciences (miscellaneous),1101,AGRI
+Arts and Humanities (all),1200,ARTS
+Radiological and Ultrasound Technology,3614,HEAL
+Geophysics,1908,EART
+History and Philosophy of Science,1207,ARTS
+Aging,1302,BIOC
+Veterinary (miscellaneous),3401,VETE
+Computer Science (all),1700,COMP
+Computational Mechanics,2206,ENGI
+Automotive Engineering,2203,ENGI
+Transportation,3313,SOCI
+Language and Linguistics,1203,ARTS
+Linguistics and Language,3310,SOCI
+Literature and Literary Theory,1208,ARTS
+Archeology (arts and humanities),1204,ARTS
+Archeology,3302,SOCI
+Radiation,3108,PHYS
+Algebra and Number Theory,2602,MATH
+Safety Research,3311,SOCI
+History,1202,ARTS
+Law,3308,SOCI
+Computational Theory and Mathematics,1703,COMP
+Theoretical Computer Science,2614,MATH
+Health Informatics,2718,MEDI
+Political Science and International Relations,3320,SOCI
+Experimental and Cognitive Psychology,3205,PSYC
+"Business, Management and Accounting (miscellaneous)",1401,BUSI
+Cultural Studies,3316,SOCI
+Chiropractics,3602,HEAL
+Energy (miscellaneous),2101,ENER
+Transplantation,2747,MEDI
+Emergency Medicine,2711,MEDI
+Pharmacy,3611,HEAL
+Social Psychology,3207,PSYC
+Applied Psychology,3202,PSYC
+Urban Studies,3322,SOCI
+Psychology (all),3200,PSYC
+Medical Laboratory Technology,3607,HEAL
+Fundamentals and Skills,2908,NURS
+Nursing (miscellaneous),2901,NURS
+Periodontics,3506,DENT
+Developmental and Educational Psychology,3204,PSYC
+Cognitive Neuroscience,2805,NEUR
+Endocrine and Autonomic Systems,2807,NEUR
+Developmental Neuroscience,2806,NEUR
+Numerical Analysis,2612,MATH
+Geometry and Topology,2608,MATH
+Discrete Mathematics and Combinatorics,2607,MATH
+Paleontology,1911,EART
+Chemical Health and Safety,1504,CENG
+Music,1210,ARTS
+"Issues, Ethics and Legal Aspects",2910,NURS
+Architecture,2216,ENGI
+Maternity and Midwifery,2913,NURS
+Visual Arts and Performing Arts,1213,ARTS
+Religious Studies,1212,ARTS
+Stratigraphy,1913,EART
+Computer Science (miscellaneous),1701,COMP
+Assessment and Diagnosis,2903,NURS
+Philosophy,1211,ARTS
+Leadership and Management,2911,NURS
+"Pharmacology, Toxicology and Pharmaceutics (miscellaneous)",3001,PHAR
+"Tourism, Leisure and Hospitality Management",1409,BUSI
+Community and Home Care,2905,NURS
+Neuropsychology and Physiological Psychology,3206,PSYC
+Dental Hygiene,3503,DENT
+Library and Information Sciences,3309,SOCI
+Psychology (miscellaneous),3201,PSYC
+Pediatrics,2919,NURS
+Economic Geology,1905,EART
+Acoustics and Ultrasonics,3102,PHYS
+Reproductive Medicine,2743,MEDI
+Health Professions (all),3600,HEAL
+Oncology (nursing),2917,NURS
+Psychiatric Mental Health,2921,NURS
+Conservation,1206,ARTS
+Complementary and Manual Therapy,3603,HEAL
+Mathematics (miscellaneous),2601,MATH
+Health Information Management,3605,HEAL
+Speech and Hearing,3616,HEAL
+Industrial Relations,1410,BUSI
+Care Planning,2904,NURS
+Museology,1209,ARTS
+Research and Theory,2922,NURS
+Neuroscience (miscellaneous),2801,NEUR
+Critical Care Nursing,2906,NURS
+Emergency Nursing,2907,NURS
+Podiatry,3613,HEAL
+Dental Assisting,3502,DENT
+Gender Studies,3318,SOCI
+Occupational Therapy,3609,HEAL
+Optometry,3610,HEAL
+Family Practice,2714,MEDI

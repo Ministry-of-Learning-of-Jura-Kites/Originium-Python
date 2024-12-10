@@ -1,4 +1,7 @@
-Data 2018-2023
-data
+data/raw
+data/schema
+data/processed/merged.csv
+data/processed/paper_reference_author.csv
+data/processed/references.csv
 settings.json
 .env
