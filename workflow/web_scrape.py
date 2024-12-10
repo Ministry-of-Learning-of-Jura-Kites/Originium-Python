@@ -80,7 +80,8 @@ def main_flow(first_year, last_year, each_year, each_chunk):
 
     years = range(first_year, last_year + 1)
     for year in years:
-        root_path = f"./Raw_Extra/{year}"
+        scopus_root_path = f"../data/raw/fetched_papers/scopus/{year}"
+        abstract_root_path = f"../data/raw/fetched_papers/abstract/{year}"
         for offset in range(0, each_year, each_chunk):
             elapsed_time = time.time() - start_time
             print(
@@ -94,22 +95,29 @@ def main_flow(first_year, last_year, each_year, each_chunk):
                     f"[{elapsed_time:.2f}] No results for year:{year}, offset:{offset}"
                 )
                 break
-
-            for paper in search_result:
-                eid = paper.get("eid")
-                if not eid:
-                    print(f"Missing EID in search result: {paper}")
-                    continue
-
-                # Retrieve abstract
-                abs_response = api_abstracts_retrieve(eid)
-                if abs_response is None:
-                    print(f"[{elapsed_time:.2f}] Paper with eid:{eid} not found")
-                    continue
-
+            else:
+                print(
+                    f"[{elapsed_time:.2f}] Found {len(search_result)} papers for year:{year}, offset:{offset}"
+                )
                 # Save to JSON
-                path = os.path.join(root_path, f"{eid}.json")
-                write_json(path, abs_response)
+                path = os.path.join(abstract_root_path, f"{year}-{offset}.json")
+                write_json(path, search_result)
+
+            # for paper in search_result:
+            #     eid = paper.get("eid")
+            #     if not eid:
+            #         print(f"Missing EID in search result: {paper}")
+            #         continue
+
+            #     # Retrieve abstract
+            #     abs_response = api_abstracts_retrieve(eid)
+            #     if abs_response is None:
+            #         print(f"[{elapsed_time:.2f}] Paper with eid:{eid} not found")
+            #         continue
+
+            #     # Save to JSON
+            #     path = os.path.join(abstract_root_path, f"{eid}.json")
+            #     write_json(path, abs_response)
 
             total += len(search_result)
             print(f"[{elapsed_time:.2f}] Loaded {total} papers")
