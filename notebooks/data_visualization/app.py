@@ -7,8 +7,14 @@ import json
 import pydeck as pdk
 import os
 import plotly.express as px
+import sys
+
+sys.path.append("../../")
+from utils.load_pipeline import *
 
 DATA_PATH = "../../data/processed/"
+PIPELINE_PATH = "../../models/pipeline.pkl"
+SUBJECTS_PATH = "../../data/processed/subjects.csv"
 
 @st.cache_data
 def load_data(filename: str) -> pd.DataFrame:
@@ -27,6 +33,7 @@ def setup_sidebar(papers_df: pd.DataFrame):
     year_range = st.sidebar.slider("Publication Year Range", min_value=min_year, max_value=max_year, value=(min_year, max_year))
     return year_range
 
+@st.cache_data
 def load_and_preprocess_data():
     papers_df = preprocess_papers(load_data("papers.csv"))
     affiliations_df = load_data("affiliations.csv")
@@ -41,12 +48,17 @@ def load_and_preprocess_data():
             paper_to_keyword_df, references_df, paper_reference_author_df)
 
 @st.cache_data
+def load_pipeline():
+    return Pipeline(PIPELINE_PATH, SUBJECTS_PATH)
+
+@st.cache_data
 def get_filtered_papers(papers_df, year_range):
     return papers_df[
         (papers_df['publish_date'].dt.year >= year_range[0]) & 
         (papers_df['publish_date'].dt.year <= year_range[1])
     ]
 
+@st.cache_data
 def plot_publications_over_time(filtered_papers):
     st.subheader("1. Publications Over Time")
     st.write("Yearly research publication trends.")
@@ -57,6 +69,7 @@ def plot_publications_over_time(filtered_papers):
     )
     st.altair_chart(line_chart, use_container_width=True)
     
+@st.cache_data
 def plot_top_journals(filtered_papers):
     st.subheader("2. Top Journals")
     st.write("Most popular journals.")
@@ -71,6 +84,7 @@ def plot_top_journals(filtered_papers):
     else:
         st.write("No journal information available.")
     
+@st.cache_data
 def plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df):
     st.subheader("3. Top Research Classification Codes")
     st.write("Most common research areas.")
@@ -95,9 +109,8 @@ def plot_top_classification_codes(filtered_papers, paper_to_classification_code_
     )
     st.altair_chart(bar_chart_class, use_container_width=True)
 
-def plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df):
-    st.subheader("4. Research Category Trends Over Time")
-    st.write("Trends in research areas over time.")
+@st.cache_data
+def get_research_trends_over_time_data(filtered_papers, paper_to_classification_code_df, classification_codes_df):
     merged_class = pd.merge(paper_to_classification_code_df, classification_codes_df, on='code', how='inner')
     merged_class = merged_class[merged_class['paper_id'].isin(filtered_papers['id'])]
     merged_class['year'] = merged_class['paper_id'].map(filtered_papers.set_index('id')['publish_date'].dt.year)
@@ -105,7 +118,10 @@ def plot_research_trends_over_time(filtered_papers, paper_to_classification_code
         merged_class['display_name'] = merged_class['abbreviation']
         merged_class['full_name'] = merged_class['name']
     max_categories = merged_class['display_name'].nunique()
-    top_n = st.slider("Select number of top categories to display:", min_value=3, max_value=max_categories, value=10)
+    return merged_class, max_categories
+
+@st.cache_data
+def get_research_trends_chart(merged_class, top_n):
     category_counts = merged_class.groupby('display_name').size().reset_index(name='total_count')
     top_categories = category_counts.nlargest(top_n, 'total_count')['display_name']
     merged_class = merged_class[merged_class['display_name'].isin(top_categories)]
@@ -119,13 +135,30 @@ def plot_research_trends_over_time(filtered_papers, paper_to_classification_code
             alt.Tooltip('display_name:N', title='Category'),
             alt.Tooltip('count:Q', title='Number of Papers')
         ]
-    ) 
+    )
+    return trend_chart
+
+def plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df):
+    st.subheader("4. Research Category Trends Over Time")
+    st.write("Trends in research areas over time.")
+    merged_class, max_categories = get_research_trends_over_time_data(filtered_papers, paper_to_classification_code_df, classification_codes_df)
+    top_n = st.slider("Select number of top categories to display:", min_value=3, max_value=max_categories, value=10)
+    trend_chart = get_research_trends_chart(merged_class, top_n)
     st.altair_chart(trend_chart, use_container_width=True)
 
+@st.cache_data
+def get_merged_keywords(filtered_papers, paper_to_keyword_df):
+    merged_keywords = paper_to_keyword_df[paper_to_keyword_df['id'].isin(filtered_papers['id'])]
+    if merged_keywords.empty:
+        return None
+    else:
+        return merged_keywords
+
+@st.cache_data
 def plot_keyword_analysis(filtered_papers, paper_to_keyword_df):
     st.subheader("7. Keyword Analysis")
     st.write("Common keywords in research.")
-    merged_keywords = paper_to_keyword_df[paper_to_keyword_df['id'].isin(filtered_papers['id'])]
+    merged_keywords = get_merged_keywords(filtered_papers, paper_to_keyword_df)
     if not merged_keywords.empty:
         keyword_text = " ".join(merged_keywords['keyword'].dropna().astype(str))
         wordcloud = WordCloud(
@@ -144,6 +177,7 @@ def plot_keyword_analysis(filtered_papers, paper_to_keyword_df):
     else:
         st.write("No keywords available for the selected years.")
 
+@st.cache_data
 def plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df):
     st.subheader("6. Affiliations by Country")
     st.write("Geographic distribution of research.")
@@ -241,10 +275,8 @@ def plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affil
     else:
         st.write("No country information available.")
 
-
-def plot_top_authors_publication_distribution(papers_df, paper_reference_author_df):
-    st.subheader("5. Top Authors Publication Distribution")
-    st.write("Pie chart showing publication contributions by most prolific authors.")
+@st.cache_data
+def get_top_authors_publication_distribution_data(papers_df, paper_reference_author_df):
     author_publications = pd.merge(
         paper_reference_author_df, 
         papers_df[['id', 'publish_date']], 
@@ -255,20 +287,30 @@ def plot_top_authors_publication_distribution(papers_df, paper_reference_author_
     author_column = 'name'
     author_pub_counts = author_publications.groupby(author_column).size().reset_index(name='publication_count')
     max_authors = author_pub_counts[author_column].nunique()
+    return author_column, author_pub_counts, max_authors
+
+@st.cache_data
+def get_top_authors(author_pub_counts, top_n):
+    return author_pub_counts.nlargest(top_n, 'publication_count')
+
+def plot_top_authors_publication_distribution(papers_df, paper_reference_author_df):
+    st.subheader("5. Top Authors Publication Distribution")
+    st.write("Pie chart showing publication contributions by most prolific authors.")
+    author_column, author_pub_counts, max_authors = get_top_authors_publication_distribution_data(papers_df, paper_reference_author_df)
     top_n = st.slider(
         "Select number of top authors to display:", 
         min_value=3, 
         max_value=min(20, max_authors), 
         value=min(10, max_authors)
     )
-    top_authors = author_pub_counts.nlargest(top_n, 'publication_count')
+    top_authors = get_top_authors(author_pub_counts, top_n)
     fig = px.pie(top_authors, values='publication_count', names=author_column, title='Publication Contributions by Top Authors')
     st.plotly_chart(fig)
 
 def main():
     st.set_page_config(page_title="Research Data Visualization Dashboard", layout="wide", page_icon="📊")
 
-    dashboard_tab, app_tab = st.tabs(["Dashboard", "App"])
+    dashboard_tab, app_demo_tab = st.tabs(["Dashboard", "App Demo"])
 
     with dashboard_tab:
         st.title("Research Data Visualization Dashboard")
@@ -283,33 +325,61 @@ def main():
         num_filtered_papers = len(filtered_papers)
         st.markdown(f"**Showing data from {year_range[0]} to {year_range[1]} ({num_filtered_papers} papers)**")
 
+        print("Publication Over Time")
         with st.expander("Publication Over Time", expanded=True):
             plot_publications_over_time(filtered_papers)
 
+        print("Top Journals")
         with st.expander("Top Journals", expanded=True):
             plot_top_journals(filtered_papers)
 
+        print("Top Research Classification Codes")
         with st.expander("Top Research Classification Codes", expanded=True):
             plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df)
 
+        print("Research Trends Over Time")
         with st.expander("Research Trends Over Time", expanded=True):
             plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df)
 
+        print("Top Authors Publication Distribution")
         with st.expander("Top Authors Publication Distribution", expanded=True):
             plot_top_authors_publication_distribution(papers_df, paper_reference_author_df)
 
+        print("Affiliations by Country")
         with st.expander("Affiliations by Country", expanded=True):
             plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df)
 
+        print("Keyword Analysis")
         with st.expander("Keyword Analysis", expanded=True):
             plot_keyword_analysis(filtered_papers, paper_to_keyword_df)
 
         st.markdown("**End of Dashboard**")
     
-    with app_tab:
-        st.title("App")
+    with app_demo_tab:
+        pipeline = load_pipeline()
+        st.title("Demo: Predicting Research Subjects and Supergroups from Paper Title and Abstract")
 
-        st.write("This is the app tab.")
+        st.write("This app predicts the subjects and supergroups of a research paper based on its title and/or abstract.")
+        title = st.text_area("Enter paper title and/or abstract here.")
+
+        if title:
+            prediction = pipeline.predict([title])[0]
+
+            st.header("Predicted subjects")
+            subject_full_names = prediction.get_full_names()
+            if len(subject_full_names) == 0:
+                st.write("No subjects predicted.")
+            else:
+                for subject_full_name in prediction.get_full_names():
+                    st.markdown(f"- {subject_full_name}")
+
+            st.header("Predicted supergroups")
+            supergroups = prediction.get_full_names()
+            if len(supergroups) == 0:
+                st.write("No supergroups predicted.")
+            else:
+                for supergroup in prediction.get_supergroups():
+                    st.markdown(f"- {supergroup}")
 
 if __name__ == "__main__":
     main()
