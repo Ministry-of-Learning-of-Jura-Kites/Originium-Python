@@ -9,12 +9,14 @@ import os
 import plotly.express as px
 import sys
 
-sys.path.append("../../")
+ROOT_PATH = ""
+
+sys.path.append(ROOT_PATH)
 from utils.load_pipeline import *
 
-DATA_PATH = "../../data/processed/"
-PIPELINE_PATH = "../../models/pipeline.pkl"
-SUBJECTS_PATH = "../../data/processed/subjects.csv"
+DATA_PATH = os.path.join(ROOT_PATH, "data/processed/")
+PIPELINE_PATH = os.path.join(ROOT_PATH, "../../models/pipeline.pkl")
+SUBJECTS_PATH = os.path.join(ROOT_PATH, "../../data/processed/subjects.csv")
 
 @st.cache_data
 def load_data(filename: str) -> pd.DataFrame:
