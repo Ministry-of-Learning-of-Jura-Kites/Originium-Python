@@ -9,7 +9,7 @@ import os
 import plotly.express as px
 import sys
 
-ROOT_PATH = ""
+ROOT_PATH = "../.."
 
 sys.path.append(ROOT_PATH)
 from utils.load_pipeline import *
