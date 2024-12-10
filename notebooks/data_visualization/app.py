@@ -40,6 +40,13 @@ def load_and_preprocess_data():
             paper_to_classification_code_df, paper_to_affiliation_df,
             paper_to_keyword_df, references_df, paper_reference_author_df)
 
+@st.cache_data
+def get_filtered_papers(papers_df, year_range):
+    return papers_df[
+        (papers_df['publish_date'].dt.year >= year_range[0]) & 
+        (papers_df['publish_date'].dt.year <= year_range[1])
+    ]
+
 def plot_publications_over_time(filtered_papers):
     st.subheader("1. Publications Over Time")
     st.write("Yearly research publication trends.")
@@ -257,55 +264,52 @@ def plot_top_authors_publication_distribution(papers_df, paper_reference_author_
     top_authors = author_pub_counts.nlargest(top_n, 'publication_count')
     fig = px.pie(top_authors, values='publication_count', names=author_column, title='Publication Contributions by Top Authors')
     st.plotly_chart(fig)
+
 def main():
     st.set_page_config(page_title="Research Data Visualization Dashboard", layout="wide", page_icon="📊")
-    st.markdown(
-        """
-        <style>
-        .stSidebar {background-color: #f7f7f7; padding: 10px;}
-        .stContainer {background-color: #ffffff;}
-        .stButton>button {background-color: #4CAF50; color: white; border-radius: 5px;}
-        </style>
-        """, unsafe_allow_html=True
-    )
 
-    st.title("Research Data Visualization Dashboard")
-    st.markdown("This dashboard provides an overview of research publications data.")
+    dashboard_tab, app_tab = st.tabs(["Dashboard", "App"])
 
-    (papers_df, affiliations_df, classification_codes_df,
-     paper_to_classification_code_df, paper_to_affiliation_df,
-     paper_to_keyword_df, references_df, paper_reference_author_df) = load_and_preprocess_data()
+    with dashboard_tab:
+        st.title("Research Data Visualization Dashboard")
+        st.markdown("This dashboard provides an overview of research publications data.")
 
-    year_range = setup_sidebar(papers_df)
-    filtered_papers = papers_df[
-        (papers_df['publish_date'].dt.year >= year_range[0]) & 
-        (papers_df['publish_date'].dt.year <= year_range[1])
-    ]
-    num_filtered_papers = len(filtered_papers)
-    st.markdown(f"**Showing data from {year_range[0]} to {year_range[1]} ({num_filtered_papers} papers)**")
+        (papers_df, affiliations_df, classification_codes_df,
+            paper_to_classification_code_df, paper_to_affiliation_df,
+            paper_to_keyword_df, references_df, paper_reference_author_df) = load_and_preprocess_data()
 
-    with st.expander("Publication Over Time", expanded=True):
-        plot_publications_over_time(filtered_papers)
-    
-    with st.expander("Top Journals", expanded=True):
-        plot_top_journals(filtered_papers)
-    
-    with st.expander("Top Research Classification Codes", expanded=True):
-        plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df)
-    
-    with st.expander("Research Trends Over Time", expanded=True):
-        plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df)
-    
-    with st.expander("Top Authors Publication Distribution", expanded=True):
-        plot_top_authors_publication_distribution(papers_df, paper_reference_author_df)
-    
-    with st.expander("Affiliations by Country", expanded=True):
-        plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df)
-    
-    with st.expander("Keyword Analysis", expanded=True):
-        plot_keyword_analysis(filtered_papers, paper_to_keyword_df)
+        year_range = setup_sidebar(papers_df)
+        filtered_papers = get_filtered_papers(papers_df, year_range)
+        num_filtered_papers = len(filtered_papers)
+        st.markdown(f"**Showing data from {year_range[0]} to {year_range[1]} ({num_filtered_papers} papers)**")
 
-    st.markdown("**End of Dashboard**")
+        with st.expander("Publication Over Time", expanded=True):
+            plot_publications_over_time(filtered_papers)
+
+        with st.expander("Top Journals", expanded=True):
+            plot_top_journals(filtered_papers)
+
+        with st.expander("Top Research Classification Codes", expanded=True):
+            plot_top_classification_codes(filtered_papers, paper_to_classification_code_df, classification_codes_df)
+
+        with st.expander("Research Trends Over Time", expanded=True):
+            plot_research_trends_over_time(filtered_papers, paper_to_classification_code_df, classification_codes_df)
+
+        with st.expander("Top Authors Publication Distribution", expanded=True):
+            plot_top_authors_publication_distribution(papers_df, paper_reference_author_df)
+
+        with st.expander("Affiliations by Country", expanded=True):
+            plot_affiliations_by_country(filtered_papers, paper_to_affiliation_df, affiliations_df)
+
+        with st.expander("Keyword Analysis", expanded=True):
+            plot_keyword_analysis(filtered_papers, paper_to_keyword_df)
+
+        st.markdown("**End of Dashboard**")
+    
+    with app_tab:
+        st.title("App")
+
+        st.write("This is the app tab.")
 
 if __name__ == "__main__":
     main()
