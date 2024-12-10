@@ -43,11 +43,10 @@ def load_and_preprocess_data():
     paper_to_classification_code_df = load_data("paper_to_classification_code.csv")
     paper_to_affiliation_df = load_data("paper_to_affiliation.csv")
     paper_to_keyword_df = load_data("paper_to_keyword.csv")
-    references_df = load_data("references.csv")
     paper_reference_author_df = load_data("paper_reference_author.csv")
     return (papers_df, affiliations_df, classification_codes_df,
             paper_to_classification_code_df, paper_to_affiliation_df,
-            paper_to_keyword_df, references_df, paper_reference_author_df)
+            paper_to_keyword_df, paper_reference_author_df)
 
 @st.cache_data
 def load_pipeline():
@@ -320,7 +319,7 @@ def main():
 
         (papers_df, affiliations_df, classification_codes_df,
             paper_to_classification_code_df, paper_to_affiliation_df,
-            paper_to_keyword_df, references_df, paper_reference_author_df) = load_and_preprocess_data()
+            paper_to_keyword_df, paper_reference_author_df) = load_and_preprocess_data()
 
         year_range = setup_sidebar(papers_df)
         filtered_papers = get_filtered_papers(papers_df, year_range)

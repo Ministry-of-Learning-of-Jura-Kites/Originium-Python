@@ -1,0 +1,28 @@
+code_prefix,subject_area,supergroup,abbreviation
+10,Multidisciplinary,Multidisciplinary,MULT
+11,Agricultural and Biological Sciences,Life Sciences,AGRI
+12,Arts and Humanities,Social Sciences,ARTS
+13,"Biochemistry, Genetics and Molecular Biology",Life Sciences,BIOC
+14,"Business, Management, and Accounting",Social Sciences,BUSI
+15,Chemical Engineering,Physical Sciences,CENG
+16,Chemistry,Physical Sciences,CHEM
+17,Computer Science,Physical Sciences,COMP
+18,Decision Sciences,Social Sciences,DECI
+19,Earth and Planetary Sciences,Physical Sciences,EART
+20,"Economics, Econometrics and Finance",Social Sciences,ECON
+21,Energy,Physical Sciences,ENER
+22,Engineering,Physical Sciences,ENGI
+23,Environmental Science,Physical Sciences,ENVI
+24,Immunology and Microbiology,Life Sciences,IMMU
+25,Materials Science,Physical Sciences,MATE
+26,Mathematics,Physical Sciences,MATH
+27,Medicine,Health Sciences,MEDI
+28,Neuroscience,Life Sciences,NEUR
+29,Nursing,Health Sciences,NURS
+30,"Pharmacology, Toxicology, and Pharmaceutics",Life Sciences,PHAR
+31,Physics and Astronomy,Physical Sciences,PHYS
+32,Psychology,Social Sciences,PSYC
+33,Social Sciences,Social Sciences,SOCI
+34,Veterinary,Health Sciences,VETE
+35,Dentistry,Health Sciences,DENT
+36,Health Professions,Health Sciences,HEAL
